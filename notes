@@ -1,0 +1,61 @@
+* the ability to login 
+* cookies - edit this cookie shows which cookies a website is currently using
+
+
+Cookies - 
+Inside the controller in the show method:
+
+        cookies["my_favorite"] = "chocolate chip"
+
+Inside the a view page of your choice = 
+
+        <h1> My favorite cookie is  <%= cookies["my_favorite"] %> </h1>
+
+Login-
+
+rails g model User username 
+rails g controller sessions new 
+
+So far we have created a model and a controller for the model that has a username and a controller that will create a new username
+
+Inside the routes.rb:
+
+get  "login"  to: "session#new"
+get "loutout" to: "session#create"
+
+Inside the SessionsController:
+
+def new
+end
+
+def create
+    user = User.find_by(username: params[:username])
+    session[:user_id] = user.user_id redirect_to snacks_path
+end
+
+Inside new view:
+
+form_tag "/login" do 
+label_tag :usernmae 
+text_field :username
+
+If you want something to appear on every page:
+
+Go to application.erb under views/layouts, and input it into the body tag. For example,
+    div class- "header" look at he lecture vid.
+
+    designate a method as helper_method :current_user if you want to include logic in your .erb text_field
+
+memoization 
+to prevent the server form hitting the same point over and over again have it so if the user id already logged in the server wont reproduce the same infor more than once
+
+@current_user ||= User.find(session[:user_id]).username
+@return @current_user
+
+
+
+# If you delete a migration by mistake: drop the table, do a rails g migration (table_name) (attributes)
+# and dont forget to add your model 
+
+
+# Attribute names need to match everywhere. Your cart would not populate in the database with cust_id because in your schema it was named customer_id.
